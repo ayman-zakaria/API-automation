@@ -2,6 +2,7 @@ package com.assessment.api.services;
 
 import com.assessment.api.models.Book;
 import com.assessment.api.utils.ConfigManager;
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
@@ -15,6 +16,7 @@ public class BooksService extends BaseService {
 
     private final String booksPath = ConfigManager.booksPath();
 
+    @Step("GET all books")
     public Response getAllBooks() {
         return given()
                 .spec(requestSpec())
@@ -22,6 +24,7 @@ public class BooksService extends BaseService {
                 .get(booksPath);
     }
 
+    @Step("GET book by id: {id}")
     public Response getBookById(int id) {
         return given()
                 .spec(requestSpec())
@@ -30,6 +33,7 @@ public class BooksService extends BaseService {
                 .get(booksPath + "/{id}");
     }
 
+    @Step("POST new book: {book.title}")
     public Response createBook(Book book) {
         return given()
                 .spec(requestSpec())
@@ -38,6 +42,7 @@ public class BooksService extends BaseService {
                 .post(booksPath);
     }
 
+    @Step("PUT update book id: {id}")
     public Response updateBook(int id, Book book) {
         return given()
                 .spec(requestSpec())
@@ -47,6 +52,7 @@ public class BooksService extends BaseService {
                 .put(booksPath + "/{id}");
     }
 
+    @Step("DELETE book id: {id}")
     public Response deleteBook(int id) {
         return given()
                 .spec(requestSpec())

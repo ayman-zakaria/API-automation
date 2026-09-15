@@ -71,6 +71,16 @@ mvn test -Dtest=BooksApiTest#getAllBooks_shouldReturnListOfBooks
 - Request/response logging is enabled on every call (`RequestLoggingFilter` /
   `ResponseLoggingFilter`) so console output shows exactly what was sent and received —
   useful when investigating the API's mock/non-persistent behaviour.
+- **Allure report**: `allure-rest-assured` automatically attaches the full request and
+  response (headers, body, status) of every call to the Allure report, and `@Step`
+  annotations on `BooksService` methods show each API call as a readable step. Results are
+  written to `target/allure-results` on every `mvn test` run. To view the report:
+  ```bash
+  mvn allure:serve
+  ```
+  This downloads the Allure commandline automatically (no separate install needed), builds
+  the report from `target/allure-results`, and opens it in your browser. Use `mvn allure:report`
+  instead if you just want the static HTML written to `target/site/allure-maven-plugin`.
 
 ## Notes on FakeRESTApi behaviour
 FakeRESTApi is a demo/mock API: `POST`, `PUT`, and `DELETE` calls are accepted and return a

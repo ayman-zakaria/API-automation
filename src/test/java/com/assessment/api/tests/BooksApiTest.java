@@ -3,6 +3,10 @@ package com.assessment.api.tests;
 import com.assessment.api.base.BaseApiTest;
 import com.assessment.api.models.Book;
 import com.assessment.api.utils.TestDataLoader;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -19,11 +23,14 @@ import static org.hamcrest.Matchers.notNullValue;
  * payloads. Where the assessment asked to "validate the returned API response and note
  * any unexpected behaviour", the relevant observations are called out inline below.
  */
+@Epic("FakeRESTApi - API Assessment")
+@Feature("Books")
 public class BooksApiTest extends BaseApiTest {
 
     // ---------- Happy path #1 ----------
 
     @Test(description = "GET /Books returns a non-empty list of well-formed book objects")
+    @Severity(SeverityLevel.CRITICAL)
     public void getAllBooks_shouldReturnListOfBooks() {
         Response response = booksService.getAllBooks();
 
@@ -37,6 +44,7 @@ public class BooksApiTest extends BaseApiTest {
     // ---------- Happy path #2 ----------
 
     @Test(description = "POST /Books accepts a new book and echoes back the submitted fields")
+    @Severity(SeverityLevel.CRITICAL)
     public void createBook_shouldReturnSubmittedBookDetails() {
         Book newBook = TestDataLoader.newBook();
 
@@ -57,6 +65,7 @@ public class BooksApiTest extends BaseApiTest {
     // ---------- Edge / negative case ----------
 
     @Test(description = "GET /Books/{id} for a non-existent id should return 404 Not Found")
+    @Severity(SeverityLevel.NORMAL)
     public void getBookById_withNonExistentId_shouldReturnNotFound() {
         int nonExistentId = Integer.parseInt(TEST_DATA.get("books.nonExistentId"));
 
