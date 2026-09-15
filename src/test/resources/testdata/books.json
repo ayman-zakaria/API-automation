@@ -1,0 +1,26 @@
+{
+  "newBook": {
+    "id": 9001,
+    "title": "Automation Testing Fundamentals",
+    "description": "A practical guide to building maintainable test automation frameworks.",
+    "pageCount": 320,
+    "excerpt": "Good automation starts with good design.",
+    "publishDate": "2024-01-15T00:00:00.000Z"
+  },
+  "updatedBook": {
+    "id": 9001,
+    "title": "Automation Testing Fundamentals - 2nd Edition",
+    "description": "An updated guide covering API and UI automation best practices.",
+    "pageCount": 350,
+    "excerpt": "Good automation starts with good design and evolves with the product.",
+    "publishDate": "2025-03-01T00:00:00.000Z"
+  },
+  "invalidBook": {
+    "id": -1,
+    "title": "",
+    "description": "Edge case book with an invalid id and blank title",
+    "pageCount": -100,
+    "excerpt": "Negative test payload",
+    "publishDate": "not-a-valid-date"
+  }
+}
