@@ -15,10 +15,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
 
-/*FakeRESTApi is a mock backend - create/update/delete calls get accepted and
- * echoed back, but nothing actually gets persisted server-side. That's expected
- */
-
+// validate the shape of what you send it (see the invalid-payload test below,
+// confirmed against the live API rather than assumed).
 @Epic("FakeRESTApi - API Assessment")
 @Feature("Books")
 public class BooksApiTest extends BaseTest {
@@ -51,16 +49,12 @@ public class BooksApiTest extends BaseTest {
                 .body("pageCount", equalTo(newBook.getPageCount()));
 
         /* worth knowing: a GET on this same id afterwards won't return what we just
-         * posted - FakeRESTApi doesn't persist anything, it just echoes the payload
+         *posted - FakeRESTApi doesn't persist anything, it just echoes the payload
          * back on the call that submitted it. Not a defect, just how the mock works.
-         */
+        */
     }
 
-    /* negative case - correct REST semantics say a non-existent id should 404.
-     * FakeRESTApi has a known habit of returning 200 with a made-up book instead,
-     * which is exactly the kind of thing worth reporting rather than working around.
-     * This assertion enforces what *should* happen, so it fails loudly if the API
-     */
+    // negative case - correct REST semantics say a non-existent id should 404.
     @Test(description = "GET /Books/{id} for a non-existent id should return 404 Not Found")
     @Severity(SeverityLevel.NORMAL)
     public void getBookById_withNonExistentId_shouldReturnNotFound() {
@@ -71,5 +65,35 @@ public class BooksApiTest extends BaseTest {
         Assert.assertEquals(response.getStatusCode(), Integer.parseInt(TEST_DATA.get("http.status.notFound")),
                 "Expected 404 for a non-existent book id - if the API returned 200 with a "
                         + "generated payload instead, that's the anomaly to report, not a bug in this test");
+    }
+
+    /* negative case - sending a deliberately broken payload (blank title, negative id
+     * and page count, garbage date string). Turns out FakeRESTApi actually does validate
+     * this - it comes back with a 400, which is the correct behaviour for a real API.
+     */
+    @Test(description = "POST /Books with an invalid payload should be rejected with 400 Bad Request")
+    @Severity(SeverityLevel.NORMAL)
+    public void createBook_withInvalidPayload_shouldReturnBadRequest() {
+        Book invalidBook = TestDataLoader.invalidBook();
+
+        Response response = booksService.createBook(invalidBook);
+
+        Assert.assertEquals(response.getStatusCode(),
+                Integer.parseInt(TEST_DATA.get("http.status.invalidPayload")),
+                "Expected FakeRESTApi to reject this invalid payload with 400 Bad Request");
+    }
+
+    // negative case - deleting something that was never there in the first place.
+    @Test(description = "DELETE /Books/{id} for a non-existent id should ideally be a 404, not a silent success")
+    @Severity(SeverityLevel.MINOR)
+    public void deleteBook_withNonExistentId_shouldExposeMissingExistenceCheck() {
+        int nonExistentId = Integer.parseInt(TEST_DATA.get("books.nonExistentId"));
+
+        Response response = booksService.deleteBook(nonExistentId);
+
+        Assert.assertEquals(response.getStatusCode(),
+                Integer.parseInt(TEST_DATA.get("http.status.deleteNonExistentBook")),
+                "FakeRESTApi is expected to return 200 here even though the id was never "
+                        + "created - a real API should probably 404 instead");
     }
 }
