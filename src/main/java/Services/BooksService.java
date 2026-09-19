@@ -7,8 +7,9 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-// wraps every call to /api/v1/Books behind readable method names. Tests call these
-// instead of building raw REST Assured requests themselves.
+/* wraps every call to /api/v1/Books behind readable method names. Tests call these
+ * instead of building raw REST Assured requests themselves.
+ */
 public class BooksService extends BaseService {
 
     private final String booksPath = ConfigManager.booksPath();

@@ -1,13 +1,13 @@
 package Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 // matches the shape FakeRESTApi returns for a book. @Builder makes test-data
-// construction readable instead of a wall of setters.
 @Data
 @Builder
 @NoArgsConstructor

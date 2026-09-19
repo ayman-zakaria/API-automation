@@ -15,10 +15,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
 
-// FakeRESTApi is a mock backend - create/update/delete calls get accepted and
-// echoed back, but nothing actually gets persisted server-side. That's expected
-// behaviour for a demo API, not a bug, but worth flagging since it shapes what
-// these tests can realistically check (see the note on the negative case below).
+/*FakeRESTApi is a mock backend - create/update/delete calls get accepted and
+ * echoed back, but nothing actually gets persisted server-side. That's expected
+ */
+
 @Epic("FakeRESTApi - API Assessment")
 @Feature("Books")
 public class BooksApiTest extends BaseTest {
@@ -50,16 +50,17 @@ public class BooksApiTest extends BaseTest {
                 .body("title", equalTo(newBook.getTitle()))
                 .body("pageCount", equalTo(newBook.getPageCount()));
 
-        // worth knowing: a GET on this same id afterwards won't return what we just
-        // posted - FakeRESTApi doesn't persist anything, it just echoes the payload
-        // back on the call that submitted it. Not a defect, just how the mock works.
+        /* worth knowing: a GET on this same id afterwards won't return what we just
+         * posted - FakeRESTApi doesn't persist anything, it just echoes the payload
+         * back on the call that submitted it. Not a defect, just how the mock works.
+         */
     }
 
-    // negative case - correct REST semantics say a non-existent id should 404.
-    // FakeRESTApi has a known habit of returning 200 with a made-up book instead,
-    // which is exactly the kind of thing worth reporting rather than working around.
-    // This assertion enforces what *should* happen, so it fails loudly if the API
-    // does the fabricated-object thing instead of a real 404.
+    /* negative case - correct REST semantics say a non-existent id should 404.
+     * FakeRESTApi has a known habit of returning 200 with a made-up book instead,
+     * which is exactly the kind of thing worth reporting rather than working around.
+     * This assertion enforces what *should* happen, so it fails loudly if the API
+     */
     @Test(description = "GET /Books/{id} for a non-existent id should return 404 Not Found")
     @Severity(SeverityLevel.NORMAL)
     public void getBookById_withNonExistentId_shouldReturnNotFound() {

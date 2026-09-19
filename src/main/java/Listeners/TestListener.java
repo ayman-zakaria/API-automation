@@ -7,10 +7,11 @@ import org.testng.ITestResult;
 
 import java.io.File;
 
-// wired up once on tests.BaseTest via @Listeners. Clears out stale Allure results
-// before a fresh run and logs each test's outcome - request/response detail on
-// failure is already captured by AllureRestAssured on the service calls themselves,
-// so there's no need to duplicate that here the way the GUI project needs screenshots.
+/* Clears out stale Allure results
+ * before a fresh run and logs each test's outcome - request/response detail on
+ * failure is already captured by AllureRestAssured on the service calls themselves,
+ * so there's no need to duplicate that here the way the GUI project needs screenshots.
+ */
 public class TestListener implements IExecutionListener, ITestListener {
 
     private static final String ALLURE_RESULTS_DIR = "target/allure-results";
