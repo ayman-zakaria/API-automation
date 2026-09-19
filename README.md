@@ -13,6 +13,17 @@ Scenarios covered:
    instead return `200 OK` with a synthetically generated book for out-of-range ids; the
    test intentionally asserts the *correct* REST semantics so this discrepancy surfaces as a
    failing test rather than being silently accepted.
+4. **Negative** — `POST /api/v1/Books` with a deliberately broken payload (blank title,
+   negative id/page count, invalid date string). A real bookstore API should reject this;
+   FakeRESTApi is expected to accept it anyway, which is the actual finding worth reporting.
+5. **Negative** — `DELETE /api/v1/Books/{id}` for an id that was never created. A well-behaved
+   API would 404 here; FakeRESTApi is expected to return a silent 200 since it doesn't check
+   whether the id exists first.
+
+Tests 4 and 5 are built on assumptions about FakeRESTApi's known behavior (no server-side
+validation, no existence checks) rather than something confirmed by running them live from
+where this project was built — see `testdata.properties` for the exact expected status codes,
+and update them if the live API behaves differently.
 
 ## Design highlights
 - **Service Object Model** (`Services` package): `BooksService` wraps every HTTP interaction
