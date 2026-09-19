@@ -1,11 +1,10 @@
-package com.assessment.api.utils;
+package BasesAndConfig;
 
-/**
- * Central access point for environment configuration (config.properties).
- */
+// Small wrapper so the rest of the code doesn't deal with raw property strings/keys.
+// Add a getter here whenever a new value gets added to config.properties.
 public final class ConfigManager {
 
-    private static final PropertiesReader READER = new PropertiesReader("config.properties");
+    private static final ConfigReader READER = new ConfigReader("config.properties");
 
     private ConfigManager() {
     }

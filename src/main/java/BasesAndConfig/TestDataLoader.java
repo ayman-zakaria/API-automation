@@ -1,17 +1,14 @@
-package com.assessment.api.utils;
+package BasesAndConfig;
 
-import com.assessment.api.models.Book;
+import Models.Book;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Loads book payloads used by tests from a single externalized JSON file
- * (src/test/resources/testdata/books.json), so test data is never hard-coded
- * inline inside test methods.
- */
+// Reads test payloads out of testdata/books.json instead of typing them inline in
+// test methods. Loaded once and cached - the file isn't going to change mid-run.
 public final class TestDataLoader {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();

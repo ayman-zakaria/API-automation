@@ -1,17 +1,14 @@
-package com.assessment.api.services;
+package Services;
 
-import com.assessment.api.models.Book;
-import com.assessment.api.utils.ConfigManager;
+import BasesAndConfig.ConfigManager;
+import Models.Book;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-/**
- * Service Object encapsulating every interaction with the /api/v1/Books endpoint.
- * Test classes call these methods instead of building raw REST Assured requests,
- * which keeps HTTP details (path, method, serialization) in one reusable place.
- */
+// wraps every call to /api/v1/Books behind readable method names. Tests call these
+// instead of building raw REST Assured requests themselves.
 public class BooksService extends BaseService {
 
     private final String booksPath = ConfigManager.booksPath();

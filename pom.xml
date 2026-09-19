@@ -20,11 +20,24 @@
         <restassured.version>5.5.0</restassured.version>
         <testng.version>7.10.2</testng.version>
         <jackson.version>2.17.2</jackson.version>
-        <slf4j.version>2.0.13</slf4j.version>
         <lombok.version>1.18.34</lombok.version>
         <allure.version>2.29.0</allure.version>
+        <allure.bom.version>2.29.0</allure.bom.version>
         <aspectj.version>1.9.22</aspectj.version>
+        <log4j.version>2.24.3</log4j.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-bom</artifactId>
+                <version>${allure.bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- REST Assured -->
@@ -61,23 +74,32 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
-        <!-- Allure -->
+        <!-- Allure (version managed by allure-bom above) -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
-            <version>${allure.version}</version>
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
-            <version>${allure.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Logging (log4j2), backing BasesAndConfig.LogUtil -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
     </dependencies>
 
@@ -106,21 +128,14 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <!-- AspectJ weaver is required by allure-testng to process @Step/@Attachment annotations -->
+                    <!-- needed for allure-testng's @Step annotations to actually get picked up -->
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.aspectj</groupId>
-                        <artifactId>aspectjweaver</artifactId>
-                        <version>${aspectj.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
-            <!-- Generates/serves the Allure HTML report from target/allure-results -->
+            <!-- plain report generation, view it with `mvn allure:serve` when you want it -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>

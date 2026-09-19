@@ -1,4 +1,4 @@
-package com.assessment.api.models;
+package Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -6,10 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * POJO representation of a Book resource returned by the FakeRESTApi Bookstore API.
- * Using a builder keeps test-data construction fluent and readable.
- */
+// matches the shape FakeRESTApi returns for a book. @Builder makes test-data
+// construction readable instead of a wall of setters.
 @Data
 @Builder
 @NoArgsConstructor

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="API Test Automation Suite" verbose="1">
+    <!-- listener is declared on tests.BaseTest instead (@Listeners), don't need it here too -->
     <test name="FakeRESTApi - Books">
         <classes>
-            <class name="com.assessment.api.tests.BooksApiTest"/>
+            <class name="tests.BooksApiTest"/>
         </classes>
     </test>
 </suite>
